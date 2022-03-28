@@ -13,6 +13,21 @@ import socket
 
 # the main funtion
 def main():
+	
+	cprint('''
+	
+
+██   █  █▀ █▄▄▄▄ ▄███▄   ▄█▄     ▄  █ 
+█ █  █▄█   █  ▄▀ █▀   ▀  █▀ ▀▄  █   █ 
+█▄▄█ █▀▄   █▀▀▌  ██▄▄    █   ▀  ██▀▀█ 
+█  █ █  █  █  █  █▄   ▄▀ █▄  ▄▀ █   █ 
+   █   █     █   ▀███▀   ▀███▀     █  
+  █   ▀     ▀                     ▀   
+ ▀                                    
+
+''','yellow')
+	
+	
 	cprint('[+] ','yellow',attrs=['bold'],end='')
 	cprint('Removing old rsa files','grey',attrs=['bold'])
 	os.system('rm /tmp/id_rsa /tmp/id_rsa.pub 2>/dev/null')
